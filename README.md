@@ -3,7 +3,7 @@ An Ember and ion.RangeSlider integration, packaged as an Ember-cli addon. Check
 [ion.RangeSlider](//github.com/IonDen/ion.rangeSlider) and [Ember-cli](http://www.ember-cli.com/).
 
 ## Browser Support
-Should run wherever Ember and Selectize run.
+Should run wherever Ember and ion.RangeSlider run.
 
 ## Demo (coming soon)
 
