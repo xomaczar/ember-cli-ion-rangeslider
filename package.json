@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-ion-rangeslider",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Ember-cli wrapper for ion.rangeSlider",
   "directories": {
     "doc": "doc",
