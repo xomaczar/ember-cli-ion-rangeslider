@@ -1,4 +1,4 @@
-# ember-cli-ion-rangeslider
+# Ember-cli-ion-rangeslider
 An Ember and ion.RangeSlider integration, packaged as an Ember-cli addon. Check 
 [ion.RangeSlider](//github.com/IonDen/ion.rangeSlider) and [Ember-cli](http://www.ember-cli.com/).
 
