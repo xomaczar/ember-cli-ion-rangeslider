@@ -53,7 +53,7 @@ You can customize which skin to use in your Brocfile.
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
 var app = new EmberApp({
-  'ember-ion-rangeslider': {
+  'ember-cli-ion-rangeslider': {
     //valid values are `nice`, `modern`, 'html5', 'flat`, `simple` or null
     skin: 'html5'
   }
