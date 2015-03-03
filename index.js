@@ -4,7 +4,7 @@
 var packagedSkins = {
   'flat':   ['skinFlat.css', 'sprite-skin-flat.png'],
   'html5':  ['skinHTML5.css', null],
-  'modern': ['skinModern.css', 'sprite-skin-flat.png'],
+  'modern': ['skinModern.css', 'sprite-skin-modern.png'],
   'nice':   ['skinNice.css', 'sprite-skin-nice.png'],
   'simple': ['skinSimple.css', 'sprite-skin-simple.png']
 };

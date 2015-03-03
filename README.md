@@ -1,23 +1,28 @@
 # Ember-cli-ion-rangeslider
-An Ember and ion.RangeSlider integration, packaged as an Ember-cli addon. Check 
+An Ember and ion.RangeSlider integration, packaged as an Ember-cli addon. Check
 [ion.RangeSlider](//github.com/IonDen/ion.rangeSlider) and [Ember-cli](http://www.ember-cli.com/).
 
 ## Browser Support
 Should run wherever Ember and ion.RangeSlider run.
 
-## Demo (coming soon)
-
 ## Installation
 
 ### As an Ember CLI addon (0.1.5 or later)
 
-Run ember install:addon ember-cli-ion-rangeslider on your project folder.
+In your ember-cli project run
+
+```bash
+ember install:addon ember-cli-ion-rangeslider
+```
 
 ### As an Ember CLI addon (prior to 0.1.5)
 
-Run npm install --save-dev ember-cli-ion-rangeslider on your project folder.
+In your ember-cli project run
 
-Run ember g ember-cli-ion-rangeslider to install ion.RangeSlider dependency from bower.
+```bash
+npm install --save-dev ember-cli-ion-rangeslider
+ember g ember-cli-ion-rangeslider
+```
 
 ### As a Standalone Library
 
@@ -43,6 +48,13 @@ This addon provides an ember-ion-rangeslider component.
 Please review [ion.RangeSlider](//github.com/IonDen/ion.rangeSlider) docs and
 [demos](http://ionden.com/a/plugins/ion.rangeSlider/en.html)
 
+-`updateTrigger` - Tells Ember-ion-rangeslider how the data-bound to/from will be updated when the user drags the slider. There are two possible values [`change`, `finish`]. `finish` is the default option, and will update the underlying to/from once the user releases a handle. The `change` will be updating the underlying to/from each `throttleTimeout`.
+
+-`throttleTimeout` - Used with `updateTrigger="change"`. It throttle slider updates to the bound fields. The default value is `50` milliseconds.
+
+- `type`, `values`, `min`, `max`, `from`, `to `, `step`, `keyboard`, `grid`, `force_edges`, `grid_num`, `prefix`, `postfix`, `disabled` - Each of these properties is bound to the ion.RangeSlider via two-way databinding, so that they will track changes that are made by the user and the slider will reflect that.
+
+
 ## Skin customization
 
 You can customize which skin to use in your Brocfile.
@@ -54,15 +66,16 @@ var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
 var app = new EmberApp({
   'ember-cli-ion-rangeslider': {
-    //valid values are `nice`, `modern`, 'html5', 'flat`, `simple` or null
-    skin: 'html5'
+
+    // valid values are `nice`, `modern`, 'html5', 'flat`, `simple` or false
+    skin: 'html5' //default `nice`
   }
 });
 
 module.exports = app.toTree();
 ```
-If you want to use the default skin (e.g. nice skin), you don't need to specify any option. If you don't want to include any css at all 
-for some reason, simply assign false or any "falsy" value to the skin option.
+If you want to use the default skin (e.g. `nice`), you don't need to specify any option or even modify your existing EmberApp. If you don't want to include any css at all
+for some reason, simply assign false or any "falsy" value to the skin option and no skin including associated assets will be included.
 
 ## Running
 ```bash
