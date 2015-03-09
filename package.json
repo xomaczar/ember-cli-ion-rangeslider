@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-ion-rangeslider",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Ember-cli addon for ion.rangeSlider",
   "directories": {
     "doc": "doc",
@@ -40,7 +40,9 @@
     "ionRangeSlider",
     "range-slider",
     "slider",
-    "range"
+    "range",
+    "min",
+    "max"
   ],
   "ember-addon": {
     "configPath": "tests/dummy/config"
