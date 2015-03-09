@@ -32,10 +32,10 @@ module.exports = {
   },
 
   included: function(app){
-  	this._super.included(app);
+    this._super.included(app);
     var config = this.envConfig()[this.name] || app.options[this.name] || {};
 
-  	app.import({
+    app.import({
       production: app.bowerDirectory + '/ionrangeslider/js/ion.rangeSlider.min.js',
       development: app.bowerDirectory + '/ionrangeslider/js/ion.rangeSlider.js'
     });
