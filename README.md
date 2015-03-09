@@ -10,7 +10,6 @@ Should run wherever Ember and ion.RangeSlider run.
 ### As an Ember CLI addon (0.1.5 or later)
 
 In your ember-cli project run
-
 ```bash
 ember install:addon ember-cli-ion-rangeslider
 ```
@@ -18,20 +17,17 @@ ember install:addon ember-cli-ion-rangeslider
 ### As an Ember CLI addon (prior to 0.1.5)
 
 In your ember-cli project run
-
 ```bash
 npm install --save-dev ember-cli-ion-rangeslider
 ember g ember-cli-ion-rangeslider
 ```
-`
+
 ### As a Standalone Library
 
 Download a release.
-
 Copy to your vendor directory and link up the .js file.
 
 ## Usage
-
 This addon provides an ember-ion-rangeslider component.
 ```handlebars
 {{ember-ion-rangeslider
@@ -61,7 +57,6 @@ Please review [ion.RangeSlider](//github.com/IonDen/ion.rangeSlider) docs and
 
 
 ## Skin customization
-
 You can customize which skin to use in your Brocfile.
 
 ```javascript
