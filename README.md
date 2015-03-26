@@ -55,7 +55,7 @@ Please review [ion.RangeSlider](//github.com/IonDen/ion.rangeSlider) docs and
 
 - `throttleTimeout` - Used with `updateTrigger="change"`. It throttles the slider's updates to the bound fields. The default value is `50` milliseconds.
 
-- `type`, `values`, `min`, `max`, `step`,  `force_edges`, `keyboard`, `keyboard_step`, `grid`, `grid_margin`, `grid_num`, `grid_snap`, `hide_min_max`, `hide_from_to`, `prefix`, `postfix`, `max_postfix`, `decorate-both`, `values_separator`, `disabled` - Each of these properties is bound to the ion.RangeSlider via one-way data binding (i.e. updating the binding target when binding source changes), so that when any of the bound properties change the slider will reflect that state.
+- `type`, `values`, `min`, `max`, `step`,  `force_edges`, `keyboard`, `keyboard_step`, `grid`, `grid_margin`, `grid_num`, `grid_snap`, `hide_min_max`, `hide_from_to`, `prefix`, `postfix`, `max_postfix`, `decorate_both`, `values_separator`, `disabled` - Each of these properties is bound to the ion.RangeSlider via one-way data binding (i.e. updating the binding target when binding source changes), so that when any of the bound properties change the slider will reflect that state.
 
 
 ## Skin customization

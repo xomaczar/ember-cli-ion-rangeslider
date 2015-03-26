@@ -1,63 +1,55 @@
 import Ember from 'ember';
+import SliderMixin from './mixins/ion-slider';
 
 var get = Ember.get,
-set = Ember.set,
-isArray = Ember.isArray,
-isNone = Ember.isNone;
+    set = Ember.set,
+    isArray = Ember.isArray,
+    isNone = Ember.isNone;
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(SliderMixin, {
   tagName: 'input',
-  attributeBindings: ['type'],
-  type: 'input',
-  classNames: 'ember-ion-rangeslider',
+  classNames: ['ember-ion-rangeslider'],
   slider: null,
 
   sliderOptions: Ember.computed(function(){
     //## Update trigger: change|finish
     var updateTrigger = get(this, 'updateTrigger') || 'finish',
-    throttleTimeout = get(this, 'throttleTimeout') || 50;
+        throttleTimeout = get(this, 'throttleTimeout') || 50,
+        options = {
+          to: get(this, 'to') || 10,
+          from: get(this, 'from') || 100,
+          onChange: Ember.K,
+          onFinish: Ember.run.bind(this, '_sliderDidFinish'),
+        };
 
-    var options = {
-      type: get(this, 'type') || 'single',
-      values: get(this, 'values') || [],
-      min: get(this, 'min'),
-      max: get(this, 'max'),
-      from: get(this, 'from'),
-      to : get(this, 'to'),
-      step: get(this, 'step'),
-      keyboard: get(this, 'keyboard'),
-      grid: get(this, 'grid') || false,
-      force_edges: get(this, 'force_edges') || false,
-      grid_num: get(this, 'grid_num') || 4,
-      prefix: get(this, 'prefix') || '',
-      postfix: get(this, 'postfix') || '',
-      disabled: get(this, 'disabled') || false,
-      onChange: Ember.K,
-      onFinish: Ember.run.bind(this, '_onSliderFinish'),
-    };
-
-    //## Setup update trigger
+    //## Setup change update trigger
     if (updateTrigger === 'change') {
-      options.onChange = Ember.run.bind(this, '_onSliderChange', throttleTimeout);
+      options.onChange = Ember.run.bind(this, '_sliderDidChange', throttleTimeout);
       options.onFinish = Ember.K;
     }
-    return options;
-  }),
+
+    var oneWayOptions = this.get('ionOneWayProperties');
+    return Ember.merge(options, oneWayOptions);
+  }).readOnly(),
 
   //## Setup/destroy
   setupRangeSlider: function(){
     var options = get(this, 'sliderOptions');
+    console.log("Got options: ", options);
     this.$().ionRangeSlider(options);
     this.slider = this.$().data('ionRangeSlider');
+    this.startObservingOneWayProps();
+
   }.on('didInsertElement'),
 
   destroyRangeSlider: function(){
+    this.stopObservingOneWayProps();
     this.slider.destroy();
+
   }.on('willDestroyElement'),
 
-
   //## Bound values observers
-  _onToAndFromValuesChanged: Ember.observer(
+  _onToFromValuesChanged: Ember.observer(
     'to', 'from',
     function(){
       var propName = arguments[1];
@@ -65,25 +57,24 @@ export default Ember.Component.extend({
       //## slider.update removes the focus from the currently active element.
       //## In case where multiple sliders bound to the same property
       //## don't update the active slider values (to/from) as it results in a
-      //## a loss of focus
+      //## a loss of focus in a currently active slider
+      console.log("onToFromValuesChanged")
       if(!this.slider.is_active){
         this.slider.update(this.getProperties(propName));
       }
     }),
-  _onOtherValuesChanged: Ember.observer(
-    'min', 'max', 'step',
-    'values', 'disabled', 'grid',
-    'grid_num', 'force_edge',
-    function(){
-      this.slider.update(this.getProperties(arguments[1]));
-    }),
+
+  _oneWayPropertyDidChange: function(){
+    console.log("Got this thing....", arguments[1]);
+    this.slider.update(this.getProperties(arguments[1]));
+  },
 
   //## ion.RangeSlider callbacks
-  _onSliderChange: function(throttleTimeout, changes){
+  _sliderDidChange: function(throttleTimeout, changes){
     var args = {'to': changes.to, 'from': changes.from };
     Ember.run.debounce(this, this.setProperties, args, throttleTimeout);
   },
-  _onSliderFinish: function(changes){
+  _sliderDidFinish: function(changes){
     this.setProperties({'to': changes.to, 'from': changes.from});
   },
 });
