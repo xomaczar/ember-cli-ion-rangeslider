@@ -1,7 +1,8 @@
 import Ember from 'ember';
+var computed = Ember.computed;
 
 var ionProperties = {
-    type               : 'double',
+    type               : 'single',
     values             : [],
     min                : 10,
     max                : 100,
@@ -44,43 +45,26 @@ var ionProperties = {
 
 export default Ember.Mixin.create({
 
-  isObserving: false,
-
-  ionOneWayProperties: Ember.computed(function(){
-    var defProps = [];
-    var propNames = Object.keys(ionProperties);
-    for(var i = 0; i < propNames.length; i++){
-      var pName = propNames[i];
-      var pValue = this.get(pName);
-
-      if (typeof pValue !== 'undefined'){
-        defProps[pName] = pValue;
-      }
-      else if (pName === 'type'){
-        defProps[pName] = ionProperties[pName];
-      }
+  ionReadOnlyOptions: computed(function(){
+    var ionOptions = {};
+    for (var pName in ionProperties){
+      ionOptions[pName] = this.getWithDefault(pName, ionProperties[pName]);
     }
-    return defProps;
+    return ionOptions;
   }).readOnly(),
 
-  startObservingOneWayProps: function(){
-    var props = this.get('ionOneWayProperties');
-    if (props && !this.get('isObserving')){
-
-      Object.keys(props).forEach(function(key){
-        Ember.addObserver(this, key, this, '_oneWayPropertyDidChange');
-      }.bind(this));
-      this.toggleProperty('isObserving');
+  _startObserving: function(){
+    var options = this.get('ionReadOnlyOptions');
+    for (var optName in options){
+      Ember.addObserver(this, optName, this, '_readOnlyPropertiesChanged');
     }
-  },
+  }.on('didInsertElement'),
 
-  stopObservingOneWayProps: function() {
-    var props = this.get('ionOneWayProperties');
-    if (props && this.get('isObserving')){
-      Object.keys(props).forEach(function(key){
-        Ember.removeObserver(this, key, this, '_oneWayPropertyDidChange');
-      });
-      this.toggleProperty('isObserving');
+  _stopObserving: function() {
+    var options = this.get('ionReadOnlyOptions');
+    for (var optName in options){
+      Ember.removeObserver(this, optName, this, '_readOnlyPropertiesChanged');
     }
-  }
+  }.on('willDestroyElement')
+
 });

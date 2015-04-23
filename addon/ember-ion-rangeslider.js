@@ -1,12 +1,14 @@
 import Ember from 'ember';
-import SliderMixin from './mixins/ion-slider';
+import IonSlider from './mixins/ion-slider';
 
 var get = Ember.get;
+var merge = Ember.merge;
 
-export default Ember.Component.extend(SliderMixin, {
+export default Ember.Component.extend(IonSlider, {
   tagName: 'input',
   classNames: ['ember-ion-rangeslider'],
-  slider: null,
+  type: 'single', //## explicit, waiting for this.attr.type
+  _slider: null,
 
   sliderOptions: Ember.computed(function(){
     //## Update trigger: change|finish
@@ -24,28 +26,25 @@ export default Ember.Component.extend(SliderMixin, {
       options.onChange = Ember.run.bind(this, '_sliderDidChange', throttleTimeout);
       options.onFinish = Ember.K;
     }
-		
-		return options;
-    //var oneWayOptions = this.get('ionOneWayProperties');
-    //return Ember.merge(options, oneWayOptions);
+    merge(options, this.get('ionReadOnlyOptions'));
+    return options;
   }).readOnly(),
 
   //## Setup/destroy
   setupRangeSlider: function(){
     var options = get(this, 'sliderOptions');
-    //console.log("Got options: ", options);
     this.$().ionRangeSlider(options);
-    this.slider = this.$().data('ionRangeSlider');
-    this.startObservingOneWayProps();
+    this._slider = this.$().data('ionRangeSlider');
+
   }.on('didInsertElement'),
 
   destroyRangeSlider: function(){
-    this.stopObservingOneWayProps();
-    this.slider.destroy();
+    this._slider.destroy();
+
   }.on('willDestroyElement'),
 
   //## Bound values observers
-  _onToFromValuesChanged: Ember.observer(
+  _onToFromPropertiesChanged: Ember.observer(
     'to', 'from',
     function(){
       var propName = arguments[1];
@@ -54,17 +53,15 @@ export default Ember.Component.extend(SliderMixin, {
       //## In case where multiple sliders bound to the same property
       //## don't update the active slider values (to/from) as it results in a
       //## a loss of focus in a currently active slider
-      if(!this.slider.is_active){
-        this.slider.update(this.getProperties(propName));
+      if(!this._slider.is_active){
+        this._slider.update(this.getProperties(propName));
       }
-    }),
+  }),
 
-  _oneWayPropertyDidChange: function(){
-    console.log("Got this thing....", arguments[1]);
-    this.slider.update(this.getProperties(arguments[1]));
+  _readOnlyPropertiesChanged: function(){
+    this._slider.update(this.getProperties(arguments[1]));
   },
 
-  //## ion.RangeSlider callbacks
   _sliderDidChange: function(throttleTimeout, changes){
     var args = {'to': changes.to, 'from': changes.from };
     Ember.run.debounce(this, this.setProperties, args, throttleTimeout);
