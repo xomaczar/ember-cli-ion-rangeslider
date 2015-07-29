@@ -14,13 +14,21 @@ export default Ember.Component.extend(IonSlider, {
     //## Update trigger: change|finish
     var updateTrigger = get(this, 'updateTrigger') || 'finish',
         throttleTimeout = get(this, 'throttleTimeout') || 50,
+        to = get(this, 'to'),
+        from = get(this, 'from'),
         options = {
-          to: get(this, 'to') || 10,
-          from: get(this, 'from') || 100,
+          to: 10,
+          from: 100,
           onChange: Ember.K,
           onFinish: Ember.run.bind(this, '_sliderDidFinish'),
         };
 
+    if (from || from === 0) {
+      options.from = from
+    }
+    if (to || to === 0) {
+      options.to = to
+    }
     //## Setup change update trigger
     if (updateTrigger === 'change') {
       options.onChange = Ember.run.bind(this, '_sliderDidChange', throttleTimeout);
@@ -53,7 +61,7 @@ export default Ember.Component.extend(IonSlider, {
       //## In case where multiple sliders bound to the same property
       //## don't update the active slider values (to/from) as it results in a
       //## a loss of focus in a currently active slider
-      if(!this._slider.is_active){
+      if(this._slider && !this._slider.is_active){
         this._slider.update(this.getProperties(propName));
       }
   }),
