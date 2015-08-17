@@ -21,7 +21,7 @@ var ionProperties = {
     to_shadow          : false,
 
     prettify_enabled   : true,
-    prettify_seperator : ' ',
+    prettify_separator : ' ',
     prettify           : null,
 
     force_edges        : false,
