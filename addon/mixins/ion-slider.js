@@ -40,7 +40,7 @@ var ionProperties = {
     max_postfix        : '',
     decorate_both      : true,
     values_separator   : ' - ',
-    disabled           : false
+    disable            : false
 };
 
 export default Ember.Mixin.create({
