@@ -46,25 +46,9 @@ var ionProperties = {
 export default Ember.Mixin.create({
 
   ionReadOnlyOptions: computed(function(){
-    var ionOptions = {};
-    for (var pName in ionProperties){
-      ionOptions[pName] = this.getWithDefault(pName, ionProperties[pName]);
-    }
-    return ionOptions;
-  }).readOnly(),
-
-  _startObserving: function(){
-    var options = this.get('ionReadOnlyOptions');
-    for (var optName in options){
-      Ember.addObserver(this, optName, this, '_readOnlyPropertiesChanged');
-    }
-  }.on('didInsertElement'),
-
-  _stopObserving: function() {
-    var options = this.get('ionReadOnlyOptions');
-    for (var optName in options){
-      Ember.removeObserver(this, optName, this, '_readOnlyPropertiesChanged');
-    }
-  }.on('willDestroyElement')
-
+    let ionOptions = {};
+    return Object.keys(ionOptions).map((key) => {
+      return this.getWithDefault(key, ionProperties[key]);
+    });
+  }).readOnly()
 });
