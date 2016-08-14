@@ -1,7 +1,10 @@
 import Ember from 'ember';
-var computed = Ember.computed;
+const {
+  computed,
+  Mixin
+} = Ember;
 
-var ionProperties = {
+const ionProperties = {
     type               : 'single',
     values             : [],
     min                : 10,
@@ -43,12 +46,12 @@ var ionProperties = {
     disabled           : false
 };
 
-export default Ember.Mixin.create({
-
-  ionReadOnlyOptions: computed(function(){
+export default Mixin.create({
+  ionReadOnlyOptions: computed(function() {
     let ionOptions = {};
-    return Object.keys(ionOptions).map((key) => {
-      return this.getWithDefault(key, ionProperties[key]);
-    });
+    for (const pName in ionProperties){
+      ionOptions[pName] = this.getWithDefault(pName, ionProperties[pName]);
+    }
+    return ionOptions;
   }).readOnly()
 });

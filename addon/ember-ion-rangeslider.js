@@ -1,46 +1,29 @@
 import Ember from 'ember';
-import IonSlider from './mixins/ion-slider';
-import { assert } from 'ember-metal/utils';
+import IonSliderMixin from './mixins/ion-slider';
+
 const {
   merge,
   computed,
-  run
+  run,
+  Component
 } = Ember;
 
-export default Ember.Component.extend(IonSlider, {
+export default Component.extend(IonSliderMixin, {
   tagName: 'input',
   classNames: ['ember-ion-rangeslider'],
-  type: 'single', //## explicit, waiting for this.attr.type
   _slider: null,
 
   didReceiveAttrs() {
     this._super(...arguments);
-    assert(`{{ion-range-slider}} requires an onFromChange option`, typeof this.get('onFromChange') === 'function');
-    if (this.get('type') === 'double')
-      assert(`{{ion-range-slider}} requires an onToChange option`, typeof this.get('onToChange') === 'function');
+
     if (this._slider) {
-      this._slider.update(this.getProperties('from', 'to'));
+      this._slider.update(this.get('sliderOptions'));
     }
   },
 
-  sliderOptions: computed(function(){
-    const throttleTimeout = this.get('throttleTimeout') || 50;
-    const to = this.get('to') || 10;
-    const from = this.get('from') || 100;
-    const options = {
-      to,
-      from,
-      onChange: Ember.K,
-      onFinish: run.bind(this, '_sliderDidFinish')
-    };
-
-    merge(options, this.get('ionReadOnlyOptions'));
-    return options;
-  }).readOnly(),
-
   didInsertElement(){
     this._super(...arguments);
-    let options = this.get('sliderOptions');
+    const options = this.get('sliderOptions');
     this.$().ionRangeSlider(options);
     this._slider = this.$().data('ionRangeSlider');
   },
@@ -50,12 +33,25 @@ export default Ember.Component.extend(IonSlider, {
     this._slider.destroy();
   },
 
-  _readOnlyPropertiesChanged(){
-    this._slider.update(this.getProperties(arguments[1]));
-  },
+  sliderOptions: computed('to', 'from', function(){
+    const to = this.getWithDefault('to', 10);
+    const from = this.getWithDefault('from', 100);
+    const options = {
+      to,
+      from,
+      onStart: run.bind(this, this.bootstrapEvent, 'onStart'),
+      onChange: run.bind(this, this.bootstrapEvent, 'onChange'),
+      onFinish: run.bind(this, this.bootstrapEvent, 'onFinish'),
+      onUpdate: run.bind(this, this.bootstrapEvent, 'onUpdate')
+    };
 
-  _sliderDidFinish(changes){
-    this.get('onFromChange')(changes.from);
-    this.get('onToChange')(changes.to);
-  },
+    merge(options, this.get('ionReadOnlyOptions'));
+    return options;
+  }).readOnly(),
+
+  bootstrapEvent(actionName, slider) {
+    if (typeof this.get(actionName) === 'function') {
+      this.get(actionName)(slider);
+    }
+  }
 });
