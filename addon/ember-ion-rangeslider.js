@@ -5,7 +5,10 @@ const {
   merge,
   computed,
   run,
-  Component
+  Component,
+  addObserver,
+  removeObserver,
+  observer
 } = Ember;
 
 export default Component.extend(IonSliderMixin, {
@@ -13,16 +16,37 @@ export default Component.extend(IonSliderMixin, {
   classNames: ['ember-ion-rangeslider'],
   _slider: null,
 
-  didReceiveAttrs() {
-    this._super(...arguments);
+  _readOnlyPropertiesChanged() {
+    this._slider.update(this.getProperties(arguments[1]));
+  },
 
-    if (this._slider) {
-      this._slider.update(this.get('sliderOptions'));
+  _startObserving() {
+    let options = this.get('ionReadOnlyOptions');
+    for (const optName in options) {
+      if (options.hasOwnProperty(optName)) {
+        addObserver(this, optName, this, '_readOnlyPropertiesChanged');
+      }
     }
   },
 
+  _stopObserving() {
+    let options = this.get('ionReadOnlyOptions');
+    for (const optName in options) {
+      if (options.hasOwnProperty(optName)) {
+        removeObserver(this, optName, this, '_readOnlyPropertiesChanged');
+      }
+    }
+  },
+
+  onToFromChange: observer('to', 'from', function() {
+    if (this._slider) {
+      this._slider.update(this.getProperties('to', 'from'));
+    }
+  }),
+
   didInsertElement(){
     this._super(...arguments);
+    this._startObserving();
     const options = this.get('sliderOptions');
     this.$().ionRangeSlider(options);
     this._slider = this.$().data('ionRangeSlider');
@@ -30,6 +54,7 @@ export default Component.extend(IonSliderMixin, {
 
   willDestroyElement(){
     this._super(...arguments);
+    this._stopObserving();
     this._slider.destroy();
   },
 
