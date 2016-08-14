@@ -1,7 +1,7 @@
 {
   "name": "ember-cli-ion-rangeslider",
-  "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "version": "0.1.0",
+  "description": "Ember-cli addon for ion.rangeSlider",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -15,7 +15,7 @@
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "",
+  "author": "Andrey S Khomenko",
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.2",
@@ -40,7 +40,20 @@
     "loader.js": "^4.0.1"
   },
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "ion-range-slider",
+    "ionRangeSlider",
+    "range-slider",
+    "rangeslider",
+    "slider",
+    "range",
+    "min",
+    "max",
+    "interface",
+    "diapason",
+    "ui",
+    "noui",
+    "skins"
   ],
   "dependencies": {
     "ember-cli-babel": "^5.1.6"
