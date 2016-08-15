@@ -18,8 +18,9 @@ module.exports = {
 
   importSkin(skin, app){
     let skinAssets = packagedSkins[skin.toLowerCase()] || [null, null];
-    const [style, img] = skinAssets;
 
+    const style = skinAssets[0];
+    const img = skinAssets[1];
     if (style){
       app.import(`${app.bowerDirectory}/ionrangeslider/css/ion.rangeSlider.${style}`);
     }
