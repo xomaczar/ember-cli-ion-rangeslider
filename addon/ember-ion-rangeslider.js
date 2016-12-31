@@ -19,7 +19,7 @@ export default Ember.Component.extend(IonSlider, {
         options = {
           to: 10,
           from: 100,
-          onChange: Ember.K,
+          onChange() {},
           onFinish: Ember.run.bind(this, '_sliderDidFinish'),
         };
 
@@ -32,7 +32,7 @@ export default Ember.Component.extend(IonSlider, {
     //## Setup change update trigger
     if (updateTrigger === 'change') {
       options.onChange = Ember.run.bind(this, '_sliderDidChange', throttleTimeout);
-      options.onFinish = Ember.K;
+      options.onFinish = function() {};
     }
     merge(options, this.get('ionReadOnlyOptions'));
     return options;
