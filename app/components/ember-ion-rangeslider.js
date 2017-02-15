@@ -1,1 +1,1 @@
-export { default } from 'ember-cli-ion-rangeslider/ember-ion-rangeslider';
+export { default } from 'ember-cli-ion-rangeslider/components/ember-ion-rangeslider';

@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import IonSliderMixin from './mixins/ion-slider';
+import IonSliderMixin from '../mixins/ion-slider';
 
 const {
   merge,
