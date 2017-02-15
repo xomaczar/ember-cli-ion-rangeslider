@@ -12,41 +12,40 @@ var packagedSkins = {
 module.exports = {
   name: 'ember-cli-ion-rangeslider',
 
-  envConfig: function(){
+  envConfig(){
     return this.project.config(process.env.EMBER_ENV || 'development');
   },
 
-  importSkin: function(skin, app){
-    var skinAssets = packagedSkins[skin.toLowerCase()] || [null, null],
-        style = skinAssets[0],
-        img = skinAssets[1];
+  importSkin(skin, app){
+    let skinAssets = packagedSkins[skin.toLowerCase()] || [null, null];
 
+    const style = skinAssets[0];
+    const img = skinAssets[1];
     if (style){
-      app.import(app.bowerDirectory + '/ionrangeslider/css/ion.rangeSlider.' + style);
+      app.import(`${app.bowerDirectory}/ionrangeslider/css/ion.rangeSlider.${style}`);
     }
     if (img){
-      app.import(app.bowerDirectory + '/ionrangeslider/img/' + img, {
+      app.import(`${app.bowerDirectory}/ionrangeslider/img/${img}`, {
         destDir: 'img'
       });
     }
   },
 
-  included: function(app){
+  included(app){
     this._super.included(app);
     var config = this.envConfig()[this.name] || app.options[this.name] || {};
 
     app.import({
-      production: app.bowerDirectory + '/ionrangeslider/js/ion.rangeSlider.min.js',
-      development: app.bowerDirectory + '/ionrangeslider/js/ion.rangeSlider.js'
+      production: `${app.bowerDirectory}/ionrangeslider/js/ion.rangeSlider.min.js`,
+      development: `${app.bowerDirectory}/ionrangeslider/js/ion.rangeSlider.js`
     });
-    app.import(app.bowerDirectory + '/ionrangeslider/css/ion.rangeSlider.css');
+    app.import(`${app.bowerDirectory}/ionrangeslider/css/ion.rangeSlider.css`);
 
     // Show something on the screen, when no skin is provided
     // If user set the skin to null explicitly, don't load any assets
-    if(typeof(config.skin) === 'undefined'){
+    if(typeof config.skin === 'undefined'){
       this.importSkin('nice', app); // default skin
-    }
-    else if (config.skin){
+    } else if (config.skin){
       this.importSkin(config.skin, app);
     }
   }

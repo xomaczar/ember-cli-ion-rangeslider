@@ -1,7 +1,10 @@
 import Ember from 'ember';
-var computed = Ember.computed;
+const {
+  computed,
+  Mixin
+} = Ember;
 
-var ionProperties = {
+const ionProperties = {
     type               : 'single',
     values             : [],
     min                : 10,
@@ -40,31 +43,15 @@ var ionProperties = {
     max_postfix        : '',
     decorate_both      : true,
     values_separator   : ' - ',
-    disabled           : false
+    disable            : false
 };
 
-export default Ember.Mixin.create({
-
-  ionReadOnlyOptions: computed(function(){
-    var ionOptions = {};
-    for (var pName in ionProperties){
+export default Mixin.create({
+  ionReadOnlyOptions: computed(function() {
+    let ionOptions = {};
+    for (const pName in ionProperties){
       ionOptions[pName] = this.getWithDefault(pName, ionProperties[pName]);
     }
     return ionOptions;
-  }).readOnly(),
-
-  _startObserving: function(){
-    var options = this.get('ionReadOnlyOptions');
-    for (var optName in options){
-      Ember.addObserver(this, optName, this, '_readOnlyPropertiesChanged');
-    }
-  }.on('didInsertElement'),
-
-  _stopObserving: function() {
-    var options = this.get('ionReadOnlyOptions');
-    for (var optName in options){
-      Ember.removeObserver(this, optName, this, '_readOnlyPropertiesChanged');
-    }
-  }.on('willDestroyElement')
-
+  }).readOnly()
 });
