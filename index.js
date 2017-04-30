@@ -35,10 +35,12 @@ module.exports = {
     this._super.included(app);
     var config = this.envConfig()[this.name] || app.options[this.name] || {};
 
-    app.import({
-      production: app.bowerDirectory + '/ionrangeslider/js/ion.rangeSlider.min.js',
-      development: app.bowerDirectory + '/ionrangeslider/js/ion.rangeSlider.js'
-    });
+    if (!process.env.EMBER_CLI_FASTBOOT) {
+      app.import({
+        production: app.bowerDirectory + '/ionrangeslider/js/ion.rangeSlider.min.js',
+        development: app.bowerDirectory + '/ionrangeslider/js/ion.rangeSlider.js'
+      });
+    }
     app.import(app.bowerDirectory + '/ionrangeslider/css/ion.rangeSlider.css');
 
     // Show something on the screen, when no skin is provided
